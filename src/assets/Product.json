@@ -1,0 +1,52 @@
+[
+  {
+    "id": "BUF-A92F3X",
+    "name": "Murrah Buffalo",
+    "age": 4,
+    "location": "Guntur",
+    "destination": "Hyderabad",
+    "amount": 65000,
+    "stock": 3,
+    "images": ["buffalo1.jpg", "buffalo2.jpg", "buffalo3.jpg"]
+  },
+  {
+    "id": "BUF-KQ82LM",
+    "name": "Jaffarabadi Buffalo",
+    "age": 5,
+    "location": "Nellore",
+    "destination": "Chennai",
+    "amount": 75000,
+    "stock": 2,
+    "images": ["buffalo4.jpg", "buffalo5.jpg", "buffalo6.jpg"]
+  },
+  {
+    "id": "BUF-HS92PL",
+    "name": "Surti Buffalo",
+    "age": 3,
+    "location": "Ongole",
+    "destination": "Bangalore",
+    "amount": 55000,
+    "stock": 4,
+    "images": ["buffalo7.jpg", "buffalo8.jpg", "buffalo9.jpg"]
+  },
+  {
+    "id": "BUF-BQ71XA",
+    "name": "Nili-Ravi Buffalo",
+    "age": 6,
+    "location": "Karimnagar",
+    "destination": "Vijayawada",
+    "amount": 82000,
+    "stock": 1,
+    "images": ["buffalo10.jpg", "buffalo11.jpg", "buffalo12.jpg"]
+  },
+  {
+    "id": "BUF-MP63TR",
+    "name": "Pandharpuri Buffalo",
+    "age": 4,
+    "location": "Warangal",
+    "destination": "Pune",
+    "amount": 60000,
+    "stock": 5,
+    "images": ["buffalo3.jpg", "buffalo7.jpg", "buffalo11.jpg"]
+  }
+]
