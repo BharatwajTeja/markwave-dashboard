@@ -116,16 +116,16 @@ function Login() {
           <h5 className="text-center mt-6 font-bold text-black">{res}</h5>
         </form>
 
-        {/* LOGO SECTION */}
-        <div
-          className="w-full md:w-1/2 flex items-center justify-center p-6"
-          style={{
-            backgroundImage: `url(${logo})`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            backgroundSize: "180px 180px",
-          }}
-        />
+
+    <div
+  className="hidden md:flex w-full md:w-1/2 items-center justify-center p-6"
+  style={{
+    backgroundImage: `url(${logo})`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "180px 180px",
+  }}
+/>
       </div>
 
       {openSignup && <Signup onClose={() => setOpenSignup(false)} />}
