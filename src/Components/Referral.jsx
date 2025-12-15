@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Refform from "./Refform";
 
 function Referral() {
   const [showForm, setShowForm] = useState(false);
-  const [records, setRecords] = useState([]);
+    const [records, setRecords] = useState(() => {
+    const saved = localStorage.getItem("referralRecords");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState("");
@@ -12,33 +15,31 @@ function Referral() {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editData, setEditData] = useState(null);
 
-const handleAddData = (data) => {
+    useEffect(() => {
+    localStorage.setItem("referralRecords", JSON.stringify(records));
+  }, [records]);
 
-  // validation: check all required fields
-  if (
-    !data.dob ||
-    !data.mobile ||
-    !data.firstName ||
-    !data.aadhar ||
-    !data.refMobile ||
-    !data.refName
-  ) {
-    alert("Please fill all fields before submitting!");
-    return;
-  }
+  const handleAddData = (data) => {
+    if (
+      !data.dob ||
+      !data.mobile ||
+      !data.firstName ||
+      !data.aadhar ||
+      !data.refMobile ||
+      !data.refName
+    ) {
+      alert("Please fill all fields before submitting!");
+      return;
+    }
 
-  // If validation passes → add
-  setRecords([...records, data]);
-  setShowForm(false);
-};
+    setRecords([...records, data]);
+    setShowForm(false);
+  };
 
-
-  //  Filter Records
   const filteredRecords = records.filter((r) =>
     Object.values(r).join(" ").toLowerCase().includes(search.toLowerCase())
   );
 
-  // Sorting Function
   const sortedRecords = [...filteredRecords].sort((a, b) => {
     if (!sortField) return 0;
     const x = a[sortField].toString();
@@ -46,13 +47,11 @@ const handleAddData = (data) => {
     return sortOrder === "asc" ? x.localeCompare(y) : y.localeCompare(x);
   });
 
-  // Open Edit Modal
   const openEditModal = (index) => {
     setEditingIndex(index);
     setEditData({ ...records[index] });
   };
 
-  // Save Updated Data
   const handleUpdate = () => {
     const updated = [...records];
     updated[editingIndex] = editData;
@@ -62,38 +61,34 @@ const handleAddData = (data) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen p-4">
 
-      {/* + Button */}
+      {/* Floating Add Button */}
       <button
         onClick={() => setShowForm(true)}
         className="bg-cyan-600 text-white font-bold w-14 h-14 flex items-center justify-center
                    rounded-full text-4xl fixed bottom-6 right-6 shadow-xl hover:bg-cyan-800 transition"
       >
-          ✚
+        ✚
       </button>
 
-      {/* Referral Add Form */}
       {showForm && (
         <Refform onSubmit={handleAddData} onClose={() => setShowForm(false)} />
       )}
 
-      {/*  Search Box */}
-      <div className="mb-4 flex justify-end gap-5  items-center">
+      {/* Search + Sort */}
+      <div className="mb-4 flex flex-col sm:flex-row gap-3 sm:gap-5 items-start sm:items-center justify-end">
         <input
           type="text"
           placeholder="Search..."
-          className="p-2 w-64 border  rounded-lg shadow-md"
+          className="p-2 w-full sm:w-64 border rounded-lg shadow-md"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {/* Sorting Dropdown */}
         <select
-          className="p-2 border rounded-lg shadow-md"
-          onChange={(e) => {
-            setSortField(e.target.value);
-          }}
+          className="p-2 w-full sm:w-auto border rounded-lg shadow-md"
+          onChange={(e) => setSortField(e.target.value)}
         >
           <option value="">Sort By</option>
           <option value="dob">DOB</option>
@@ -106,7 +101,7 @@ const handleAddData = (data) => {
 
         <button
           onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-          className="px-4 py-2 bg-cyan-700 text-white rounded-lg shadow hover:bg-cyan-900"
+          className="px-4 py-2 bg-cyan-700 text-white rounded-lg shadow hover:bg-cyan-900 w-full sm:w-auto"
         >
           {sortOrder === "asc" ? "⬆ Asc" : "⬇ Desc"}
         </button>
@@ -114,9 +109,9 @@ const handleAddData = (data) => {
 
       {/* Table */}
       <div className="mt-6 overflow-x-auto">
-        <table className="w-full border shadow-lg rounded-lg overflow-hidden">
+        <table className="min-w-[800px] w-full border shadow-lg rounded-lg overflow-hidden">
           <thead>
-            <tr className="bg-cyan-300  text-black">
+            <tr className="bg-cyan-300 text-black">
               <th className="p-2 border">DOB</th>
               <th className="p-2 border">Mobile</th>
               <th className="p-2 border">Name</th>
@@ -145,75 +140,43 @@ const handleAddData = (data) => {
         </table>
       </div>
 
-      {/*  Edit Modal */}
+      {/* Edit Modal */}
       {editData && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
-          <div className="bg-gray-400 p-6 rounded-2xl shadow-2xl w-110 h-170 text-center">
+        <div className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 overflow-y-auto">
+          <div className="bg-gray-300 p-6 rounded-2xl shadow-2xl w-full max-w-md text-center">
 
-            <h2 className="text-xl font-extrabold mb-10 mr-50 w-30  border-8 rounded-2xl bg-yellow-50 text-cyan-700">Edit Data</h2>
+            <h2 className="text-2xl font-extrabold mb-6 rounded-xl bg-yellow-50 text-cyan-700 py-2">
+              Edit Data
+            </h2>
 
-            {/* Form Fields */}
-            <label className="block mb-2 font-semibold">DOB:</label>
-            <input
-              type="date"
-              className="w-60 p-2 mb-3 border rounded-2xl bg-white"
-              value={editData.dob}
-              onChange={(e) => setEditData({ ...editData, dob: e.target.value })}
-            />
+            {[
+              ["DOB", "date", "dob"],
+              ["Mobile No", "text", "mobile", true],
+              ["Name", "text", "firstName"],
+              ["Aadhar No", "text", "aadhar"],
+              ["Ref Mobile", "text", "refMobile"],
+              ["Ref Name", "text", "refName"],
+            ].map(([label, type, key, disabled]) => (
+              <div key={key} className="mb-3 text-left">
+                <label className="block mb-1 font-semibold">{label}</label>
+                <input
+                  type={type}
+                  disabled={disabled}
+                  className={`w-full p-2 border rounded-xl ${
+                    disabled ? "bg-gray-500 cursor-not-allowed" : "bg-white"
+                  }`}
+                  value={editData[key]}
+                  onChange={(e) =>
+                    setEditData({ ...editData, [key]: e.target.value })
+                  }
+                />
+              </div>
+            ))}
 
-            <label className="block mb-2 font-semibold">Mobile No:</label>
-            <input
-              type="text"
-              disabled
-              className="w-60 p-2 mb-3 border rounded-2xl bg-neutral-600 cursor-not-allowed"
-              value={editData.mobile}
-            />
-
-            <label className="block mb-2 font-semibold">Name:</label>
-            <input
-              type="text"
-              className="w-60 p-2 mb-3 border rounded-2xl bg-white"
-              value={editData.firstName}
-              onChange={(e) =>
-                setEditData({ ...editData, firstName: e.target.value })
-              }
-            />
-
-            <label className="block mb-2 font-semibold">Aadhar No:</label>
-            <input
-              type="text"
-              className="w-60 p-2 mb-3 border rounded-2xl bg-white"
-              value={editData.aadhar}
-              onChange={(e) =>
-                setEditData({ ...editData, aadhar: e.target.value })
-              }
-            />
-
-            <label className="block mb-2 font-semibold">Ref Mobile:</label>
-            <input
-              type="text"
-              className="w-60 p-2 mb-3 border rounded-2xl bg-white"
-              value={editData.refMobile}
-              onChange={(e) =>
-                setEditData({ ...editData, refMobile: e.target.value })
-              }
-            />
-
-            <label className="block mb-2 font-semibold">Ref Name:</label>
-            <input
-              type="text"
-              className="w-60 p-2 mb-3 border rounded-2xl bg-white"
-              value={editData.refName}
-              onChange={(e) =>
-                setEditData({ ...editData, refName: e.target.value })
-              }
-            />
-
-            {/* Buttons */}
-            <div className="flex justify-around mt-4">
+            <div className="flex gap-4 justify-center mt-4">
               <button
                 onClick={handleUpdate}
-                className="bg-fuchsia-400 text-white px-4 py-2  rounded-lg hover:bg-cyan-900"
+                className="bg-fuchsia-500 text-white px-6 py-2 rounded-lg hover:bg-cyan-900"
               >
                 Update
               </button>
@@ -223,7 +186,7 @@ const handleAddData = (data) => {
                   setEditData(null);
                   setEditingIndex(null);
                 }}
-                className="bg-red-400 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-700"
               >
                 Cancel
               </button>

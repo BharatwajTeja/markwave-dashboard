@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Signup from "./Signup";
 import { useNavigate } from "react-router-dom";  
-import logo from "../assets/icon.png";   // PNG file
+import logo from "../assets/icon.png";
 
 function Login() {
   const navigate = useNavigate(); 
@@ -35,101 +35,97 @@ function Login() {
     } else {
       setRes("Login Fail!!");
     }
-    
+
     setEmail("");
     setPswd("");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-100"
-    
+    <div
+      className="min-h-screen flex items-center justify-center bg-purple-100 px-3"
       onClick={() => {
-    setEmailErr("");
-    setPswdErr("");
-    setRes("");
-  }}
-
-    
+        setEmailErr("");
+        setPswdErr("");
+        setRes("");
+      }}
     >
-
-      <div 
-        className="bg-white shadow-xl rounded-3xl overflow-hidden w-[90%] max-w-3xl flex relative"
- 
-         
-      >
+      <div className="bg-white shadow-xl rounded-3xl overflow-hidden 
+                      w-full max-w-3xl flex flex-col md:flex-row relative">
 
         {/* LOGIN FORM */}
-        <form className="bg-pink-200 p-8 w-1/2 bg-opacity-90 backdrop-blur-sm"
-        
+        <form className="bg-pink-200 p-6 sm:p-8 
+                         w-full md:w-1/2 bg-opacity-90 backdrop-blur-sm">
 
-        
-                >
-          <h2 className="text-2xl font-extrabold text-center mb-8 text-gray-900">
+          <h2 className="text-2xl font-extrabold text-center mb-6 text-gray-900">
             Login
           </h2>
 
-          <label className="block mb-2">
-            <span className="text-gray-800 font-medium text-cyan-900">Email</span>
+          <label className="block mb-3">
+            <span className="font-medium text-cyan-900">Email</span>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-               onClick={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
               type="email"
-              className="mt-1 w-75 p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="mt-1 w-full p-2 border rounded-2xl 
+                         focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            {emailErr && <p className="text-red-600 text-sm font-bold mt-1">{emailErr}</p>}
+            {emailErr && (
+              <p className="text-red-600 text-sm font-bold mt-1">{emailErr}</p>
+            )}
           </label>
 
           <label className="block mb-4">
-            <span className="text-gray-800 font-medium text-cyan-900">Password</span>
+            <span className="font-medium text-cyan-900">Password</span>
             <input
               value={pswd}
               onChange={(p) => setPswd(p.target.value)}
-               onClick={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
               type="password"
-              className="mt-1 w-75 p-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 "
+              className="mt-1 w-full p-2 border rounded-2xl 
+                         focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            {pswdErr && <p className="text-red-600 text-sm font-bold mt-1">{pswdErr}</p>}
+            {pswdErr && (
+              <p className="text-red-600 text-sm font-bold mt-1">{pswdErr}</p>
+            )}
           </label>
 
-          <button 
-            type="button"
-            
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-6">
+            <button
+              type="button"
               onClick={(e) => {
-              e.stopPropagation(); // prevent clearing errors
-              login();
+                e.stopPropagation();
+                login();
               }}
-            className="w-40 ml-15 mt-5 bg-amber-950 text-white py-2 rounded-3xl hover:bg-blue-900 transition"
-          >
-            Login
-          </button>
+              className="w-full sm:w-40 bg-amber-950 text-white py-2 
+                         rounded-3xl hover:bg-blue-900 transition"
+            >
+              Login
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setOpenSignup(!openSignup)}
-            className="w-2/4 mb-5 ml-116 bg-lime-600 text-white py-2 rounded-2xl hover:bg-gray-900 transition"
-          >
-            Signup
-          </button>
+            <button
+              type="button"
+              onClick={() => setOpenSignup(!openSignup)}
+              className="w-full sm:w-40 bg-lime-600 text-white py-2 
+                         rounded-2xl hover:bg-gray-900 transition"
+            >
+              Signup
+            </button>
+          </div>
 
-          <h5 className="text-center mb-10 mr-10  font-bold text-black">{res}</h5>
+          <h5 className="text-center mt-6 font-bold text-black">{res}</h5>
         </form>
 
-          <div
- 
-            className="w-1/2 flex items-center justify-center mb-2"
-            style={{
-                       backgroundImage: `url(${logo})`,
-                       backgroundRepeat: "no-repeat",
-                       backgroundPosition: "center",
-                       backgroundSize: "200px 200px", // fixed symbol size
-                   }}
-                  >
-
-                    <h2 ></h2>
-                    </div>
-
-
+        {/* LOGO SECTION */}
+        <div
+          className="w-full md:w-1/2 flex items-center justify-center p-6"
+          style={{
+            backgroundImage: `url(${logo})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "180px 180px",
+          }}
+        />
       </div>
 
       {openSignup && <Signup onClose={() => setOpenSignup(false)} />}
